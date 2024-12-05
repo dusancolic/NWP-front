@@ -1,0 +1,37 @@
+<div class="container" #container>
+    <div class="form-container sign-in-container">
+      <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+        <h1>Sign in</h1>
+  
+        <input type="email" placeholder="Email" formControlName="email" />
+        <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+          <div *ngFor="let error of errorMessages.email">
+            <small small class="failed" role="alert" *ngIf="loginForm.get('email')?.hasError(error.type)">
+              {{ error.message }}
+            </small>
+          </div>
+        </div>
+  
+        <input [type]="showPassword ? 'text' : 'password'" placeholder="Password" formControlName="password" />
+        <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+          <div *ngFor="let error of errorMessages.password">
+            <small class="failed" role="alert" *ngIf="loginForm.get('password')?.hasError(error.type)">
+              {{ error.message }}
+            </small>
+          </div>
+        </div>
+  
+        <div class="show">
+          <input (click)="togglePasswordVisibility()" type="checkbox" class="show-password">
+          <label>Show password</label>
+        </div>
+  
+        <button type="submit">Sign In</button>
+        <!-- Login failure message -->
+        <div *ngIf="loginFailed" class="failed" role="alert">
+          {{errorMessage}}
+        </div>
+      </form>
+    </div>
+</div>
+

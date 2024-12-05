@@ -1,0 +1,54 @@
+<div class="container" #container>
+    <div class="form-container sign-in-container">
+      <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+        <h1>Edit User</h1>
+  
+        <input type="text" placeholder="Firstname" formControlName="firstname" />
+        <div *ngIf="editForm.get('firstname')?.touched && editForm.get('firstname')?.invalid">
+          <div *ngFor="let error of errorMessages.firstname">
+            <small small class="failed" role="alert" *ngIf="editForm.get('firstname')?.hasError(error.type)">
+              {{ error.message }}
+            </small>
+          </div>
+        </div>
+
+        <input type="text" placeholder="Lastname" formControlName="lastname" />
+        <div *ngIf="editForm.get('lastname')?.touched && editForm.get('lastname')?.invalid">
+          <div *ngFor="let error of errorMessages.lastname">
+            <small small class="failed" role="alert" *ngIf="editForm.get('lastname')?.hasError(error.type)">
+              {{ error.message }}
+            </small>
+          </div>
+        </div>
+
+        <input type="email" placeholder="Email" formControlName="email" />
+        <div *ngIf="editForm.get('email')?.touched && editForm.get('email')?.invalid">
+          <div *ngFor="let error of errorMessages.email">
+            <small small class="failed" role="alert" *ngIf="editForm.get('email')?.hasError(error.type)">
+              {{ error.message }}
+            </small>
+          </div>
+        </div>
+  
+        <div class="show">
+        
+            <input type="checkbox" formControlName="can_read"> Can Read
+            <br>
+            <input type="checkbox" formControlName="can_create"> Can Create
+            <br>
+            <input type="checkbox" formControlName="can_update"> Can Update
+            <br>
+            <input type="checkbox" formControlName="can_delete"> Can Delete
+        </div>
+
+  
+        <button type="submit">Edit User</button>
+        <!-- Register failure message -->
+        <div *ngIf="editFailed" class="failed" role="alert">
+          {{errorMessage}}
+        </div>
+      </form>
+    </div>
+</div>
+
+

@@ -1,0 +1,66 @@
+<div class="container" #container>
+    <div class="form-container sign-in-container">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <h1>Register User</h1>
+  
+        <input type="text" placeholder="Firstname" formControlName="firstname" />
+        <div *ngIf="registerForm.get('firstname')?.touched && registerForm.get('firstname')?.invalid">
+          <div *ngFor="let error of errorMessages.firstname">
+            <small small class="failed" role="alert" *ngIf="registerForm.get('firstname')?.hasError(error.type)">
+              {{ error.message }}
+            </small>
+          </div>
+        </div>
+
+        <input type="text" placeholder="Lastname" formControlName="lastname" />
+        <div *ngIf="registerForm.get('lastname')?.touched && registerForm.get('lastname')?.invalid">
+          <div *ngFor="let error of errorMessages.lastname">
+            <small small class="failed" role="alert" *ngIf="registerForm.get('lastname')?.hasError(error.type)">
+              {{ error.message }}
+            </small>
+          </div>
+        </div>
+
+        <input type="email" placeholder="Email" formControlName="email" />
+        <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+          <div *ngFor="let error of errorMessages.email">
+            <small small class="failed" role="alert" *ngIf="registerForm.get('email')?.hasError(error.type)">
+              {{ error.message }}
+            </small>
+          </div>
+        </div>
+  
+        <input [type]="showPassword ? 'text' : 'password'" placeholder="Password" formControlName="password"/>
+        <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+          <div *ngFor="let error of errorMessages.password">
+            <small class="failed" role="alert" *ngIf="registerForm.get('password')?.hasError(error.type)">
+              {{ error.message }}
+            </small>
+          </div>
+        </div>
+        <div class="show">
+        
+            <input type="checkbox" formControlName="can_read"> Can Read
+            <br>
+            <input type="checkbox" formControlName="can_create"> Can Create
+            <br>
+            <input type="checkbox" formControlName="can_update"> Can Update
+            <br>
+            <input type="checkbox" formControlName="can_delete"> Can Delete
+        </div>
+
+        <div class="show">
+          <input (click)="togglePasswordVisibility()" type="checkbox" class="show-password">
+          <label>Show password</label>
+        </div>
+  
+        <button type="submit">Register User</button>
+        <!-- Register failure message -->
+        <div *ngIf="registerFailed" class="failed" role="alert">
+          {{errorMessage}}
+        </div>
+      </form>
+    </div>
+</div>
+
+
