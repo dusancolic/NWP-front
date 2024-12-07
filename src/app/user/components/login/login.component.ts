@@ -5,9 +5,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { LoginViewModel, PermissionModel } from '../../model/model';
-import { UserService } from '../../service/user.service';
-import { PermissionService } from '../../service/permisions.service';
+import { LoginViewModel, PermissionModel } from '../../../model/user-model';
+import { UserService } from '../../../service/user.service';
+import { PermissionService } from '../../../service/permisions.service';
 
 @Component({
   selector: 'app-login',
@@ -41,6 +41,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(private formBuilder: FormBuilder, private userService: UserService, private router: Router, private permissionService: PermissionService) { }
 
   ngOnInit(): void {
+    const token = localStorage.getItem("token");
+    if(token)
+      this.router.navigate(['/users']);
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]]
@@ -68,7 +71,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               
               this.saveUserDataToLocalStorage(response);
 
-              //this.router.navigate(['/navigation']);
+              this.router.navigate(['/users']);
             } else {
               this.loginFailed = true;
             }

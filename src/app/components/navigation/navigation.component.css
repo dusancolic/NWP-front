@@ -1,0 +1,86 @@
+h1 {
+    padding: 0 1rem;
+}
+
+h2 {
+    padding: 1rem;
+}
+
+button:focus {
+    outline: none;
+}
+
+
+mat-toolbar {
+    position: fixed;
+    top: 0;
+    z-index: 2;
+    background: linear-gradient(to right, #ff2b2b, #ff8741);
+    color: white;
+}
+
+mat-toolbar-a {
+    display: inline-block;
+
+}
+
+.mat-toolbar::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: rgba(255, 255, 255, 0.062);
+    transform: translate(-50%, -50%);
+    transition: width 0.2s ease, height 0.2s ease;
+    pointer-events: none;
+}
+
+.mat-toolbar:hover::after {
+    width: 100%;
+    height: 100%;
+}
+
+
+.menu {
+    color: white;
+}
+
+mat-sidenav-container {
+    height: 100%;
+}
+
+mat-sidenav {
+    padding-top: 3.5rem;
+
+    @media screen and (min-width: 600px) {
+        padding-top: 4rem;
+    }
+
+    .entry {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem;
+    }
+
+    .helper {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem;
+        color: red;
+    }
+
+    background-color: #fff8f0;
+}
+
+mat-sidenav-content {
+    padding-top: 3.5rem;
+
+    @media screen and (min-width: 600px) {
+        padding-top: 4rem;
+    }
+
+}

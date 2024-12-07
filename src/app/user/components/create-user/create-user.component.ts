@@ -5,8 +5,9 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { LoginViewModel, UserCreateModel } from '../../model/model';
-import { UserService } from '../../service/user.service';
+import { LoginViewModel, UserCreateModel } from '../../../model/user-model';
+import { UserService } from '../../../service/user.service';
+import { NavigationComponent } from '../../../components/navigation/navigation.component';
 
 @Component({
   selector: 'app-create-user',
@@ -14,7 +15,8 @@ import { UserService } from '../../service/user.service';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NavigationComponent
   ],
   templateUrl: './create-user.component.html',
   styleUrl: './create-user.component.css'
@@ -95,7 +97,7 @@ export class CreateUserComponent implements OnInit, OnDestroy {
             if (response) {
               this.registerFailed = false;
               this.registerForm.reset();
-              //this.router.navigate(['/navigation']);
+              this.router.navigate(['/users']);
             } else {
               this.registerFailed = true;
             }

@@ -8,7 +8,7 @@ export class UtilityService {
   constructor() {}
 
   getHeaders(): HttpHeaders {
-    const token = typeof window !== 'undefined' ? sessionStorage.getItem('token') || localStorage.getItem('token') || '' : '';
+    const token = localStorage.getItem('token') || '';
     const headers = new HttpHeaders({
       'Authorization': token ? `Bearer ${token}` : ''
     });

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PermissionModel } from '../model/model';
+import { PermissionModel } from '../model/user-model';
 
 @Injectable({
   providedIn: 'root',

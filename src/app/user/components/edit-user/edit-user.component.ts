@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { UserEditModel, UserViewModel } from '../../model/model';
-import { UserService } from '../../service/user.service';
+import { UserEditModel, UserViewModel } from '../../../model/user-model';
+import { UserService } from '../../../service/user.service';
+import { NavigationComponent } from '../../../components/navigation/navigation.component';
 
 @Component({
   selector: 'app-edit-user',
@@ -14,7 +14,8 @@ import { UserService } from '../../service/user.service';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    NavigationComponent
   ],
   templateUrl: './edit-user.component.html',
   styleUrl: './edit-user.component.css'
@@ -47,10 +48,10 @@ export class EditUserComponent implements OnInit, OnDestroy {
   errorMessage!: string;
   id: number = 0;
 
-  constructor(private formBuilder: FormBuilder, private userService: UserService, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private userService: UserService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    
+    const user = history.state.user;
     this.editForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       firstname: ['', [Validators.required, Validators.minLength(2)]],
@@ -60,8 +61,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
       can_update: [false],
       can_delete: [false]
     });
-    this.findUserByUsername('ucuc@gmail.com');
-
+    this.findUserByUsername(user.username);
     this.resetData();
   }
 
@@ -92,7 +92,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
             if (response) {
               this.editFailed = false;
               this.editForm.reset();
-              //this.router.navigate(['/navigation']);
+              this.router.navigate(['/users']);
             } else {
               this.editFailed = true;
             }
