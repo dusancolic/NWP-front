@@ -5,22 +5,27 @@ import { PermissionModel } from '../model/model';
   providedIn: 'root',
 })
 export class PermissionService {
-  private userPremissions: PermissionModel | null = null;
+  private userPermissions: PermissionModel | null = null;
 
   constructor() {}
 
 
-  setUserPermissions(userPremissions: PermissionModel) {
-    this.userPremissions = userPremissions;
+  setUserPermissions(userPermissions: PermissionModel) {
+
+    this.userPermissions = userPermissions;
+    localStorage.setItem("permissions", JSON.stringify(userPermissions));
     console.log("set perm");
-    console.log(userPremissions);
-    console.log(this.userPremissions);
+    console.log(userPermissions);
+    console.log(this.userPermissions);
   }
 
   hasPermission(permission: keyof PermissionModel['permissions']): boolean {
     console.log("has perm");
-    console.log(this.userPremissions);
-    return this.userPremissions?.permissions[permission] ?? false;
+    console.log(this.userPermissions);
+    const storedPermissions = localStorage.getItem("permissions");
+    if(storedPermissions)
+      this.userPermissions = JSON.parse(storedPermissions);
+    return this.userPermissions?.permissions[permission] ?? false;
   }
 
 }
