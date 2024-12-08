@@ -128,6 +128,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
   }
 
   editUser(user: UserViewModel): void {
+    this.id = user.id;
     this.editForm.controls['email'].setValue(user.username);
     this.editForm.controls['firstname'].setValue(user.firstname);
     this.editForm.controls['lastname'].setValue(user.lastname);
