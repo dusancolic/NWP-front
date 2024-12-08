@@ -62,7 +62,7 @@ export class EditUserComponent implements OnInit, OnDestroy {
       can_delete: [false]
     });
   
-    this.findUserByUsername(user.username);
+    this.editUser(user);
     this.resetData();
   
     this.editForm.valueChanges.subscribe(values => {
@@ -127,27 +127,13 @@ export class EditUserComponent implements OnInit, OnDestroy {
     });
   }
 
-  findUserByUsername(username: string): void {
-    this.subscriptions.push(this.userService.findUserByUsername(username)
-      .subscribe(
-        response => {
-          if (response) {
-            this.id = response.id;
-            this.editForm.controls['email'].setValue(response.username);
-            this.editForm.controls['firstname'].setValue(response.firstname);
-            this.editForm.controls['lastname'].setValue(response.lastname);
-            this.editForm.controls['can_create'].setValue(response.can_create);
-            this.editForm.controls['can_read'].setValue(response.can_read);
-            this.editForm.controls['can_delete'].setValue(response.can_delete);
-            this.editForm.controls['can_update'].setValue(response.can_update);
-          } else {
-            this.editFailed = true;
-          }
-        },
-        error => {
-          console.error('Error during finding:', error);
-        }
-      ));
+  editUser(user: UserViewModel): void {
+    this.editForm.controls['email'].setValue(user.username);
+    this.editForm.controls['firstname'].setValue(user.firstname);
+    this.editForm.controls['lastname'].setValue(user.lastname);
+    this.editForm.controls['can_create'].setValue(user.can_create);
+    this.editForm.controls['can_read'].setValue(user.can_read);
+    this.editForm.controls['can_delete'].setValue(user.can_delete);
+    this.editForm.controls['can_update'].setValue(user.can_update);
   }
 }
-
