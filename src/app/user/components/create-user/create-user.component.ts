@@ -27,10 +27,6 @@ export class CreateUserComponent implements OnInit, OnDestroy {
 
   registerFailed: boolean = false;
   showPassword: boolean = false;
-  isReadChecked: boolean = false;
-  isCreateChecked: boolean = false;
-  isDeleteChecked: boolean = false;
-  isUpdateChecked: boolean = false;
 
   registerForm!: FormGroup;
   errorMessages = {
@@ -67,6 +63,11 @@ export class CreateUserComponent implements OnInit, OnDestroy {
       can_delete: [false]
     });
     this.resetData();
+    this.registerForm.valueChanges.subscribe(values => {
+      if ((values.can_create || values.can_update || values.can_delete) && !values.can_read) {
+        this.registerForm.patchValue({ can_read: true });
+      }
+    });
   }
 
   onSubmit(): void {

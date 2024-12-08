@@ -61,8 +61,15 @@ export class EditUserComponent implements OnInit, OnDestroy {
       can_update: [false],
       can_delete: [false]
     });
+  
     this.findUserByUsername(user.username);
     this.resetData();
+  
+    this.editForm.valueChanges.subscribe(values => {
+      if ((values.can_create || values.can_update || values.can_delete) && !values.can_read) {
+        this.editForm.patchValue({ can_read: true });
+      }
+    });
   }
 
   onSubmit(): void {
