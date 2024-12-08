@@ -37,7 +37,7 @@ export class AllUsersComponent implements OnInit {
   pageIndex: number = 0;
   pageSize: number = 10;
   totalUsers: number = 0;
-  displayedColumns: string[] = ['id', 'firstname', 'lastname', 'username', 'can_create', 'can_read', 'can_update', 'can_delete', 'deleted'];
+  displayedColumns: string[] = ['id', 'firstname', 'lastname', 'username', 'can_create', 'can_read', 'can_update', 'can_delete', 'deleted', 'actions'];
   dataSource: MatTableDataSource<UserViewModel> = new MatTableDataSource<UserViewModel>([]);
   subscriptions: Subscription[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;

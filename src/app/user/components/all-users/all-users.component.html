@@ -44,12 +44,16 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Can Delete </th>
             <td mat-cell *matCellDef="let user"> {{user.can_delete}} </td>
           </ng-container>
-  
+
+          <ng-container matColumnDef="deleted">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Deleted </th>
+            <td mat-cell *matCellDef="let user"> {{user.deleted}} </td>
+          </ng-container>
         <!-- Delete Column -->
-        <ng-container matColumnDef="deleted">
+        <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef> Actions </th>
           <td mat-cell *matCellDef="let user">
-            <button mat-raised-button color="primary" (click)="toggleDelete(user)" hidden="canDelete()">
+            <button *ngIf="canDelete()"  mat-raised-button color="primary" (click)="toggleDelete(user)">
               {{user.deleted ? 'Undelete' : 'Delete'}}
             </button>
           </td>
