@@ -22,7 +22,7 @@
         <!-- Email Column -->
         <ng-container matColumnDef="username">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
-          <td mat-cell *matCellDef="let user" (click)="navigateToEditUser(user)"> {{user.username}} </td>
+          <td class="link" mat-cell *matCellDef="let user" (click)="navigateToEditUser(user)"> {{user.username}} </td>
         </ng-container>
   
         <ng-container matColumnDef="can_create">

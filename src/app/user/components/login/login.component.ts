@@ -66,7 +66,6 @@ export class LoginComponent implements OnInit, OnDestroy {
             if (response) {
               this.loginFailed = false;
               this.loginForm.reset();
-              console.log("response", response);
               this.permissionService.setUserPermissions(new PermissionModel(response.can_create, response.can_read, response.can_update, response.can_delete));
               
               this.saveUserDataToLocalStorage(response);

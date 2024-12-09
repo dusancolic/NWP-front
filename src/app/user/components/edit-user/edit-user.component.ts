@@ -92,7 +92,6 @@ export class EditUserComponent implements OnInit, OnDestroy {
         can_delete: can_delete,
         can_update: can_update
       };
-      console.log("changepost", changePost);
       this.subscriptions.push(this.userService.editUser(changePost)
         .subscribe(
           response => {
