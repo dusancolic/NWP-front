@@ -1,0 +1,35 @@
+<app-navigation>
+    <div class="container" #container>
+        <div class="form-container sign-in-container">
+          <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+            <h1>Edit Dish</h1>
+      
+            <input type="text" placeholder="Name" formControlName="name" />
+            <div *ngIf="editForm.get('name')?.touched && editForm.get('name')?.invalid">
+              <div *ngFor="let error of errorMessages.name">
+                <small small class="failed" role="alert" *ngIf="editForm.get('name')?.hasError(error.type)">
+                  {{ error.message }}
+                </small>
+              </div>
+            </div>
+    
+            <input type="text" placeholder="Price" formControlName="price" />
+            <div *ngIf="editForm.get('price')?.touched && editForm.get('price')?.invalid">
+              <div *ngFor="let error of errorMessages.price">
+                <small small class="failed" role="alert" *ngIf="editForm.get('price')?.hasError(error.type)">
+                  {{ error.message }}
+                </small>
+              </div>
+            </div>
+
+            <button type="submit">Edit Dish</button>
+            <!-- Register failure message -->
+            <div *ngIf="editFailed" class="failed" role="alert">
+              {{errorMessage}}
+            </div>
+          </form>
+        </div>
+    </div>
+</app-navigation>
+    
+    

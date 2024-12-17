@@ -6,6 +6,9 @@ import { AuthGuard } from './user/auth.guard';
 import { CreateUserComponent } from './user/components/create-user/create-user.component';
 import { PermissionGuard } from './user/permission.guard';
 import { WithoutReadComponentComponent } from './user/components/without-read-component/without-read-component.component';
+import { AllDishesComponent } from './dishes/all-dishes/all-dishes.component';
+import { CreateDishComponent } from './dishes/create-dish/create-dish.component';
+import { EditDishComponent } from './dishes/edit-dish/edit-dish.component';
 
 export const routes: Routes = [
     {
@@ -39,6 +42,23 @@ export const routes: Routes = [
         component: CreateUserComponent,
         canActivate: [AuthGuard, PermissionGuard],
         data: { permissions: ['can_read', 'can_create'] }
+    },
+    {
+        path: 'dishes', 
+        component: AllDishesComponent,
+        canActivate: [AuthGuard],
+    },
+    {
+        path: 'create-dish', 
+        component: CreateDishComponent,
+        canActivate: [AuthGuard, PermissionGuard],
+        data: { permissions: ['can_read', 'can_create'] }
+    },
+    {
+        path: 'edit-dish', 
+        component: EditDishComponent, 
+        canActivate: [AuthGuard, PermissionGuard],
+        data: { permissions: ['can_read', 'can_update'] }
     },
     {
         path: '**', 

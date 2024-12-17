@@ -1,0 +1,39 @@
+<app-navigation>
+    <div>
+    <div class="container" #container>
+        <div class="form-container sign-in-container">
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <h1>Create Dish</h1>
+      
+            <input type="text" placeholder="Name" formControlName="name" />
+            <div *ngIf="registerForm.get('name')?.touched && registerForm.get('name')?.invalid">
+              <div *ngFor="let error of errorMessages.name">
+                <small small class="failed" role="alert" *ngIf="registerForm.get('name')?.hasError(error.type)">
+                  {{ error.message }}
+                </small>
+              </div>
+            </div>
+    
+            <input type="number" placeholder="Price" formControlName="price" min="0"/>
+            <div *ngIf="registerForm.get('price')?.touched && registerForm.get('price')?.invalid">
+              <div *ngFor="let error of errorMessages.price">
+                <small small class="failed" role="alert" *ngIf="registerForm.get('price')?.hasError(error.type)">
+                  {{ error.message }}
+                </small>
+              </div>
+            </div>
+    
+      
+            <button type="submit">Create Dish</button>
+            <!-- Register failure message -->
+            <div *ngIf="createFailed" class="failed" role="alert">
+              {{errorMessage}}
+            </div>
+          </form>
+        </div>
+    </div>
+</div>
+    
+</app-navigation>
+    
+    

@@ -41,7 +41,8 @@ export class AllUsersComponent implements OnInit {
   dataSource: MatTableDataSource<UserViewModel> = new MatTableDataSource<UserViewModel>([]);
   subscriptions: Subscription[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  
+  @ViewChild(MatSort) sort!: MatSort;
+
   constructor(private userService: UserService, private router: Router, private permissionService: PermissionService) { }
 
   ngOnInit(): void {
@@ -52,6 +53,7 @@ export class AllUsersComponent implements OnInit {
     this.subscriptions.push(this.userService.getUsers(this.pageIndex, this.pageSize).subscribe(res => {
       this.dataSource.data = res.content;
       this.totalUsers = res.totalElements;
+      this.dataSource.sort = this.sort;
     }));
   }
 

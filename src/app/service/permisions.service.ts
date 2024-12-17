@@ -10,9 +10,11 @@ export class PermissionService {
   constructor() {}
 
 
-  setUserPermissions(userPermissions: PermissionModel) {
+  setUserPermissions(userPermissions: PermissionModel, admin: boolean) {
     this.userPermissions = userPermissions;
     localStorage.setItem("permissions", JSON.stringify(userPermissions));
+    if(admin)
+      localStorage.setItem("admin", "true");
   }
 
   hasPermission(permission: keyof PermissionModel['permissions']): boolean {
@@ -20,6 +22,11 @@ export class PermissionService {
     if(storedPermissions)
       this.userPermissions = JSON.parse(storedPermissions);
     return this.userPermissions?.permissions[permission] ?? false;
+  }
+
+  isAdmin(): boolean{
+    const admin = localStorage.getItem('admin');
+    return admin !== null && admin === "true";
   }
 
 }

@@ -36,10 +36,13 @@ export class NavigationComponent {
   userRoutes = [
     { name: 'Users', url: '/users', icon: 'group' },
     { name: 'Create User', url: '/create-user', icon: 'person_add_alt'},
+    { name: 'Dishes', url: '/dishes', icon: 'fastfood' },
+    { name: 'Create Dish', url: '/create-dish', icon: 'soup_kitchen'},
   ];
 
   userRoutesWithoutCreateUser = [
     { name: 'Users', url: '/users', icon: 'group' },
+    { name: 'Dishes', url: '/dishes', icon: 'fastfood' },
   ];
 
   routes: any[] = this.userRoutes;

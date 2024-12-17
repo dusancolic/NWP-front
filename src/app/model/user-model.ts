@@ -8,10 +8,11 @@ export class UserViewModel {
     can_read: boolean;
     can_delete: boolean;
     can_update: boolean;
+    admin: boolean;
     token: string = "";
     deleted: boolean;
 
-    constructor(id: number, firstname: string, lastname: string, username: string, password: string, can_create: boolean, can_read: boolean, can_delete: boolean, can_update: boolean, deleted: boolean) {
+    constructor(id: number, firstname: string, lastname: string, username: string, password: string, can_create: boolean, can_read: boolean, can_delete: boolean, can_update: boolean, deleted: boolean, admin: boolean) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -22,6 +23,7 @@ export class UserViewModel {
         this.can_delete = can_delete;
         this.can_update = can_update;
         this.deleted = deleted;
+        this.admin = admin;
     }
 }
 
