@@ -8,11 +8,17 @@ export class UserViewModel {
     can_read: boolean;
     can_delete: boolean;
     can_update: boolean;
+    can_search_order: boolean;
+    can_place_order: boolean;
+    can_cancel_order: boolean;
+    can_track_order: boolean;
+    can_schedule_order: boolean;
     admin: boolean;
     token: string = "";
     deleted: boolean;
 
-    constructor(id: number, firstname: string, lastname: string, username: string, password: string, can_create: boolean, can_read: boolean, can_delete: boolean, can_update: boolean, deleted: boolean, admin: boolean) {
+    constructor(id: number, firstname: string, lastname: string, username: string, password: string, can_create: boolean, can_read: boolean, can_delete: boolean, can_update: boolean,
+        can_search_order: boolean, can_place_order: boolean, can_cancel_order: boolean, can_track_order: boolean, can_schedule_order: boolean, deleted: boolean, admin: boolean) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -22,6 +28,11 @@ export class UserViewModel {
         this.can_read = can_read;
         this.can_delete = can_delete;
         this.can_update = can_update;
+        this.can_search_order = can_search_order;
+        this.can_place_order = can_place_order;
+        this.can_cancel_order = can_cancel_order;
+        this.can_track_order = can_track_order;
+        this.can_schedule_order = can_schedule_order;
         this.deleted = deleted;
         this.admin = admin;
     }
@@ -37,7 +48,15 @@ export class UserCreateModel {
     can_delete: boolean;
     can_update: boolean;
 
-    constructor(firstname: string, lastname: string, username: string, password: string, can_create: boolean, can_read: boolean, can_delete: boolean, can_update: boolean) {
+    can_search_order: boolean;
+    can_place_order: boolean;
+    can_cancel_order: boolean;
+    can_track_order: boolean;
+    can_schedule_order: boolean;
+
+    constructor(firstname: string, lastname: string, username: string, password: string, can_create: boolean, can_read: boolean, can_delete: boolean, can_update: boolean,
+        can_search_order: boolean, can_place_order: boolean, can_cancel_order: boolean, can_track_order: boolean, can_schedule_order: boolean
+    ) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.username = username;
@@ -46,6 +65,11 @@ export class UserCreateModel {
         this.can_read = can_read;
         this.can_delete = can_delete;
         this.can_update = can_update;
+        this.can_search_order = can_search_order;
+        this.can_place_order = can_place_order;
+        this.can_cancel_order = can_cancel_order;
+        this.can_track_order = can_track_order;
+        this.can_schedule_order = can_schedule_order;
     }
 }
 
@@ -58,8 +82,15 @@ export class UserEditModel {
     can_read: boolean;
     can_delete: boolean;
     can_update: boolean;
+    can_search_order: boolean;
+    can_place_order: boolean;
+    can_cancel_order: boolean;
+    can_track_order: boolean;
+    can_schedule_order: boolean;
 
-    constructor(id: number, firstname: string, lastname: string, username: string, can_create: boolean, can_read: boolean, can_delete: boolean, can_update: boolean) {
+    constructor(id: number, firstname: string, lastname: string, username: string, can_create: boolean, can_read: boolean, can_delete: boolean, can_update: boolean,
+        can_search_order: boolean, can_place_order: boolean, can_cancel_order: boolean, can_track_order: boolean, can_schedule_order: boolean
+    ) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -68,6 +99,11 @@ export class UserEditModel {
         this.can_read = can_read;
         this.can_delete = can_delete;
         this.can_update = can_update;
+        this.can_search_order = can_search_order;
+        this.can_place_order = can_place_order;
+        this.can_cancel_order = can_cancel_order;
+        this.can_track_order = can_track_order;
+        this.can_schedule_order = can_schedule_order;
     }
 }
 
@@ -91,11 +127,16 @@ export class PermissionModel{
         can_create: boolean;
         can_read: boolean;
         can_delete: boolean;
-        can_update: boolean;
+        can_update: boolean;  
+        can_search_order: boolean;
+        can_place_order: boolean;
+        can_cancel_order: boolean;
+        can_track_order: boolean;
+        can_schedule_order: boolean;
     };
     
-    constructor(can_create: boolean, can_read: boolean, can_update: boolean, can_delete: boolean) {
-        this.permissions = { can_create, can_read, can_update, can_delete };
+    constructor(can_create: boolean, can_read: boolean, can_update: boolean, can_delete: boolean, can_search_order: boolean, can_place_order: boolean, can_cancel_order: boolean, can_track_order: boolean, can_schedule_order: boolean) {
+        this.permissions = { can_create, can_read, can_update, can_delete, can_search_order, can_place_order, can_cancel_order, can_track_order, can_schedule_order };
     }
     
 }

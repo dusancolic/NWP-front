@@ -45,6 +45,31 @@
             <td mat-cell *matCellDef="let user"> {{user.can_delete}} </td>
           </ng-container>
 
+          <ng-container matColumnDef="can_search_order">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Can Search Order </th>
+            <td mat-cell *matCellDef="let user"> {{user.can_search_order}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="can_place_order">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Can Place Order </th>
+            <td mat-cell *matCellDef="let user"> {{user.can_place_order}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="can_cancel_order">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Can Cancel Order </th>
+            <td mat-cell *matCellDef="let user"> {{user.can_cancel_order}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="can_track_order">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Can Track Order </th>
+            <td mat-cell *matCellDef="let user"> {{user.can_track_order}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="can_schedule_order">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Can Schedule Order </th>
+            <td mat-cell *matCellDef="let user"> {{user.can_schedule_order}} </td>
+          </ng-container>
+
           <ng-container matColumnDef="deleted">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Deleted </th>
             <td mat-cell *matCellDef="let user"> {{user.deleted}} </td>
