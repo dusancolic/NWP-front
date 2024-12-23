@@ -74,6 +74,9 @@ export class EditUserComponent implements OnInit, OnDestroy {
       if ((values.can_create || values.can_update || values.can_delete) && !values.can_read) {
         this.editForm.patchValue({ can_read: true });
       }
+      if(values.can_search_order || values.can_cancel_order || values.can_track_order || values.can_schedule_order) {
+        this.editForm.patchValue({can_place_order: true });
+      }
     });
   }
 

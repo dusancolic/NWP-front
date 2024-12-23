@@ -9,6 +9,7 @@ import { WithoutReadComponentComponent } from './user/components/without-read-co
 import { AllDishesComponent } from './dishes/all-dishes/all-dishes.component';
 import { CreateDishComponent } from './dishes/create-dish/create-dish.component';
 import { EditDishComponent } from './dishes/edit-dish/edit-dish.component';
+import { AllErrorsComponent } from './errors/all-errors/all-errors.component';
 
 export const routes: Routes = [
     {
@@ -59,6 +60,12 @@ export const routes: Routes = [
         component: EditDishComponent, 
         canActivate: [AuthGuard, PermissionGuard],
         data: { permissions: ['can_read', 'can_update'] }
+    },
+    {
+        path: 'errors',
+        component: AllErrorsComponent,
+        canActivate: [AuthGuard, PermissionGuard],
+        data: { permissions: ['can_place_order'] }
     },
     {
         path: '**', 

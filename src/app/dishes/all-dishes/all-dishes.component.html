@@ -26,9 +26,9 @@
           <!-- Delete Column -->
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> Actions </th>
-            <td mat-cell *matCellDef="let dishish">
-              <button *ngIf="canDelete()"  mat-raised-button color="primary" (click)="toggleDelete(dishish)">
-                {{dishish.deleted ? 'Undelete' : 'Delete'}}
+            <td mat-cell *matCellDef="let dish">
+              <button *ngIf="canDelete()"  mat-raised-button color="primary" (click)="toggleDelete(dish)">
+                {{dish.deleted ? 'Undelete' : 'Delete'}}
               </button>
             </td>
           </ng-container>
