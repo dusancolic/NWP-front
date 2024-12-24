@@ -6,10 +6,11 @@ import { AuthGuard } from './user/auth.guard';
 import { CreateUserComponent } from './user/components/create-user/create-user.component';
 import { PermissionGuard } from './user/permission.guard';
 import { WithoutReadComponentComponent } from './user/components/without-read-component/without-read-component.component';
-import { AllDishesComponent } from './dishes/all-dishes/all-dishes.component';
-import { CreateDishComponent } from './dishes/create-dish/create-dish.component';
-import { EditDishComponent } from './dishes/edit-dish/edit-dish.component';
-import { AllErrorsComponent } from './errors/all-errors/all-errors.component';
+import { AllOrdersComponent } from './components/all-orders/all-orders.component';
+import { AllDishesComponent } from './components/dishes/all-dishes/all-dishes.component';
+import { CreateDishComponent } from './components/dishes/create-dish/create-dish.component';
+import { EditDishComponent } from './components/dishes/edit-dish/edit-dish.component';
+import { AllErrorsComponent } from './components/all-errors/all-errors.component';
 
 export const routes: Routes = [
     {
@@ -66,6 +67,12 @@ export const routes: Routes = [
         component: AllErrorsComponent,
         canActivate: [AuthGuard, PermissionGuard],
         data: { permissions: ['can_place_order'] }
+    },
+    {
+        path: 'orders',
+        component: AllOrdersComponent,
+        canActivate: [AuthGuard, PermissionGuard],
+        data: { permissions: ['can_search_order'] }
     },
     {
         path: '**', 

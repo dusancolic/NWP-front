@@ -7,10 +7,10 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
-import { PermissionService } from '../../service/permisions.service';
-import { DishDeleteModel, DishViewModel } from '../../model/dish-model';
-import { DishService } from '../../service/dish.service';
-import { NavigationComponent } from '../../components/navigation/navigation.component';
+import { NavigationComponent } from '../../navigation/navigation.component';
+import { DishService } from '../../../service/dish.service';
+import { DishDeleteModel, DishViewModel } from '../../../model/dish-model';
+import { PermissionService } from '../../../service/permisions.service';
 
 
 const HOME = '/home';

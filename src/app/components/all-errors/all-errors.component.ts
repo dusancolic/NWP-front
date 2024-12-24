@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs';
 
 import { Router, RouterOutlet } from '@angular/router';
@@ -29,6 +29,7 @@ const HOME = '/home';
   ],
   templateUrl: './all-errors.component.html',
   styleUrl: './all-errors.component.css',
+  providers: [DatePipe]
 })
 export class AllErrorsComponent implements OnInit {
 
@@ -41,10 +42,9 @@ export class AllErrorsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   
-  constructor(private errorService: ErrorService, private router: Router, private permissionService: PermissionService) { }
+  constructor(private datePipe: DatePipe, private errorService: ErrorService, private router: Router, private permissionService: PermissionService) { }
 
   ngOnInit(): void {
-    const can_read = this.permissionService.hasPermission("can_read");
     this.getErrors();
   }
 

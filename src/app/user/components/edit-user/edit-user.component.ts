@@ -71,13 +71,37 @@ export class EditUserComponent implements OnInit, OnDestroy {
     this.resetData();
   
     this.editForm.valueChanges.subscribe(values => {
+
       if ((values.can_create || values.can_update || values.can_delete) && !values.can_read) {
-        this.editForm.patchValue({ can_read: true });
+        this.editForm.patchValue({ can_read: true,
+          can_place_order: true,
+          can_search_order: true,
+          can_cancel_order: true,
+          can_track_order: true,
+          can_schedule_order: true
+         }, { emitEvent: false });
       }
-      if(values.can_search_order || values.can_cancel_order || values.can_track_order || values.can_schedule_order) {
-        this.editForm.patchValue({can_place_order: true });
+    
+      if (values.can_read) {
+        this.editForm.patchValue({
+          can_place_order: true,
+          can_search_order: true,
+          can_cancel_order: true,
+          can_track_order: true,
+          can_schedule_order: true
+        }, { emitEvent: false });
+      }
+    
+      if (
+        values.can_search_order ||
+        values.can_cancel_order ||
+        values.can_track_order ||
+        values.can_schedule_order
+      ) {
+        this.editForm.patchValue({ can_place_order: true }, { emitEvent: false });
       }
     });
+    
   }
 
   onSubmit(): void {

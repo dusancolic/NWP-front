@@ -5,9 +5,10 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { NavigationComponent } from '../../components/navigation/navigation.component';
-import { DishService } from '../../service/dish.service';
-import { DishCreateModel } from '../../model/dish-model';
+import { NavigationComponent } from '../../navigation/navigation.component';
+import { DishService } from '../../../service/dish.service';
+import { DishCreateModel } from '../../../model/dish-model';
+
 
 @Component({
   selector: 'app-create-dish',

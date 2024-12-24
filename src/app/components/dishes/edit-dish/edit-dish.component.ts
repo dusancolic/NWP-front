@@ -4,9 +4,10 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { NavigationComponent } from '../../components/navigation/navigation.component';
-import { DishService } from '../../service/dish.service';
-import { DishEditModel, DishViewModel } from '../../model/dish-model';
+import { NavigationComponent } from '../../navigation/navigation.component';
+import { DishService } from '../../../service/dish.service';
+import { DishEditModel, DishViewModel } from '../../../model/dish-model';
+
 
 @Component({
   selector: 'app-edit-dish',
