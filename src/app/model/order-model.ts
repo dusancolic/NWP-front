@@ -22,13 +22,13 @@ export class OrderViewModel{
 export class OrderSearchModel{
     from: Date | null;
     to: Date | null;
-    userId: number | null;
+    username: string | null;
     statuses: string[] | null;
 
-    constructor(from: Date | null, to: Date | null, userId: number | null, statuses: string[] | null){
+    constructor(from: Date | null, to: Date | null, username: string | null, statuses: string[] | null){
         this.from = from;
         this.to = to;
-        this.userId = userId;
+        this.username = username;
         this.statuses = statuses;
     }
 }

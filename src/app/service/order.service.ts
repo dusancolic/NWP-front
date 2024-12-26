@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { UtilityService } from './utility.service';
 import { PageableResponse } from '../pageable-response.model';
-import { DishCreateModel, DishDeleteModel, DishEditModel, DishViewModel } from '../model/dish-model';
 import { OrderCreateModel, OrderEditModel, OrderSearchModel, OrderViewModel } from '../model/order-model';
 
 const ORDERS = "/orders";

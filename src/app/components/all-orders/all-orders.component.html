@@ -1,63 +1,105 @@
 <app-navigation>
-    <div class="mat-elevation-z8">
-        <table mat-table [dataSource]="dataSource" class="mat-table" matSort>
-          <!-- ID Column -->
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-            <td mat-cell *matCellDef="let order"> {{order.id}} </td>
-          </ng-container>
-    
-          <ng-container  matColumnDef="orderedBy" >
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Ordered By </th>
-            <td mat-cell *matCellDef="let order"> {{order.orderedBy.username}} </td>
-          </ng-container>
+  <div class="mat-elevation-z8" *ngIf="orderDoesntExist === true">
+    <table mat-table [dataSource]="dataSource" class="mat-table" matSort>
 
-          <ng-container  matColumnDef="dishes" >
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Dishes </th>
-            <td mat-cell *matCellDef="let order"> {{order.dishes}} </td>
-          </ng-container>
-    
-          <ng-container matColumnDef="orderStatus">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-              <td mat-cell *matCellDef="let order"> {{order.orderStatus}}</td>
-            </ng-container>
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let order"> {{order.id}} </td>
+      </ng-container>
 
-            <ng-container matColumnDef="active">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Active </th>
-              <td mat-cell *matCellDef="let order"> {{order.active}} </td>
-            </ng-container>
+      <!-- Ordered By Column -->
+      <ng-container matColumnDef="orderedBy">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Ordered By </th>
+        <td mat-cell *matCellDef="let order"> {{order.orderedBy.username}} </td>
+      </ng-container>
 
-            
-            <ng-container matColumnDef="orderedAt">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Ordered At </th>
-                <td mat-cell *matCellDef="let order"> {{order.orderedAt | date:'dd/MM/yyyy HH:mm'}} </td>
-              </ng-container>
+      <!-- Dishes Column -->
+      <ng-container matColumnDef="dishes">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Dishes </th>
+        <td mat-cell *matCellDef="let order"> {{order.dishes}} </td>
+      </ng-container>
 
-          <!-- Delete Column -->
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef> Actions </th>
-            <td mat-cell *matCellDef="let order">
-              <button *ngIf="canCancel(order)" mat-raised-button color="primary" (click)="toggleEdit(order)">
-                {{'Cancel'}}
-              </button>
-            </td>
-          </ng-container>
-    
-          <!-- Header and Row Declarations -->
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-    
-        <!-- Paginator -->
-        <mat-paginator 
-          (page)="onPageChange($event)"
-          [length]="totalOrders" 
-          [pageSizeOptions]="[5, 10, 20]" 
-          [pageSize]="pageSize"
-          [pageIndex]="pageIndex"
-          showFirstLastButtons>
-        </mat-paginator>
-    
+      <!-- Order Status Column -->
+      <ng-container matColumnDef="orderStatus">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+        <td mat-cell *matCellDef="let order"> {{order.orderStatus}}</td>
+      </ng-container>
+
+      <!-- Active Column -->
+      <ng-container matColumnDef="active">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Active </th>
+        <td mat-cell *matCellDef="let order"> {{order.active}} </td>
+      </ng-container>
+
+      <!-- Ordered At Column -->
+      <ng-container matColumnDef="orderedAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Ordered At </th>
+        <td mat-cell *matCellDef="let order"> {{order.orderedAt | date:'dd/MM/yyyy HH:mm'}} </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let order">
+          <button *ngIf="canCancel(order)" mat-raised-button color="primary" (click)="toggleEdit(order)">
+            Cancel
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Table Header and Rows -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <!-- Paginator -->
+    <mat-paginator (page)="onPageChange($event)" [length]="totalOrders" [pageSizeOptions]="[5, 10, 20]"
+      [pageSize]="pageSize" [pageIndex]="pageIndex" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+  <h3 class="failed" *ngIf="orderDoesntExist === false">No orders found for selected options</h3>
+
+  <div class="search">
+    <h3>Search Orders</h3>
+    <form [formGroup]="ordersSearchForm" (ngSubmit)="onSearch()">
+      <div class="group">
+        <mat-form-field appearance="fill" *ngIf="isAdmin()">
+          <mat-label>Ordered By</mat-label>
+          <input matInput type="text" formControlName="orderedBy" placeholder="Ordered By">
+        </mat-form-field>
+        
+        <mat-form-field>
+          <mat-label>From</mat-label>
+          <input matInput [matDatepicker]="fromPicker" formControlName="fromDate" placeholder="mm/dd/yyyy">
+          <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+          <mat-datepicker #fromPicker></mat-datepicker>
+        </mat-form-field>
+        
+        <mat-form-field>
+          <mat-label>To</mat-label>
+          <input matInput [matDatepicker]="toPicker" formControlName="toDate" placeholder="mm/dd/yyyy">
+          <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+          <mat-datepicker #toPicker></mat-datepicker>
+        </mat-form-field>
       </div>
-  </app-navigation>
+      
+      <div class="group">
+        <mat-form-field appearance="fill">
+          <mat-label>Order Status</mat-label>
+          <mat-select formControlName="orderStatuses" multiple>
+            <mat-option *ngFor="let status of orderStatuses" [value]="status" (onSelectionChange)="toggleOrderStatusSelection(status)">
+              {{ status }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
   
+      <div class="button-group">
+        <button mat-raised-button color="primary" type="submit">Search</button>
+        <button mat-raised-button color="warn" type="button" (click)="onReset()">Reset</button>
+      </div>
+    </form>
+  </div>
+  
+</app-navigation>
