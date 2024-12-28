@@ -41,6 +41,17 @@ export class OrderCreateModel{
     }
 }
 
+export class OrderScheduleModel{
+    dishes: DishViewModel[];
+    scheduledFor: Date;
+    constructor(dishes: DishViewModel[], scheduledFor: Date){
+        this.dishes = dishes;
+        this.scheduledFor = scheduledFor;
+    }
+}
+
+
+
 export class OrderEditModel{
     id: number;
     orderStatus: string;

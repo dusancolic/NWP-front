@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               this.permissionService.setUserPermissions(new PermissionModel(response.can_create, response.can_read, response.can_update, response.can_delete, response.can_search_order, response.can_place_order, response.can_cancel_order, response.can_track_order, response.can_schedule_order), response.admin);
               
               this.saveUserDataToLocalStorage(response);
-
+              
               this.router.navigate(['/users']);
             } else {
               this.loginFailed = true;

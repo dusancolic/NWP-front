@@ -1,5 +1,5 @@
 <app-navigation>
-  <div class="mat-elevation-z8" *ngIf="orderDoesntExist === true">
+  <div class="mat-elevation-z8" *ngIf="orderDoesntExist === false">
     <table mat-table [dataSource]="dataSource" class="mat-table" matSort>
 
       <!-- ID Column -->
@@ -58,7 +58,7 @@
       [pageSize]="pageSize" [pageIndex]="pageIndex" showFirstLastButtons>
     </mat-paginator>
   </div>
-  <h3 class="failed" *ngIf="orderDoesntExist === false">No orders found for selected options</h3>
+  <h3 class="failed" *ngIf="orderDoesntExist === true">No orders found for selected options</h3>
 
   <div class="search">
     <h3>Search Orders</h3>
@@ -68,14 +68,14 @@
           <mat-label>Ordered By</mat-label>
           <input matInput type="text" formControlName="orderedBy" placeholder="Ordered By">
         </mat-form-field>
-        
+
         <mat-form-field>
           <mat-label>From</mat-label>
           <input matInput [matDatepicker]="fromPicker" formControlName="fromDate" placeholder="mm/dd/yyyy">
           <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
           <mat-datepicker #fromPicker></mat-datepicker>
         </mat-form-field>
-        
+
         <mat-form-field>
           <mat-label>To</mat-label>
           <input matInput [matDatepicker]="toPicker" formControlName="toDate" placeholder="mm/dd/yyyy">
@@ -83,23 +83,24 @@
           <mat-datepicker #toPicker></mat-datepicker>
         </mat-form-field>
       </div>
-      
+
       <div class="group">
         <mat-form-field appearance="fill">
           <mat-label>Order Status</mat-label>
           <mat-select formControlName="orderStatuses" multiple>
-            <mat-option *ngFor="let status of orderStatuses" [value]="status" (onSelectionChange)="toggleOrderStatusSelection(status)">
+            <mat-option *ngFor="let status of orderStatuses" [value]="status"
+              (onSelectionChange)="toggleOrderStatusSelection(status)">
               {{ status }}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
-  
+
       <div class="button-group">
         <button mat-raised-button color="primary" type="submit">Search</button>
         <button mat-raised-button color="warn" type="button" (click)="onReset()">Reset</button>
       </div>
     </form>
   </div>
-  
+
 </app-navigation>

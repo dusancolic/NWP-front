@@ -32,7 +32,7 @@ export class PermissionGuard implements CanActivate {
       if(!this.permissionService.hasPermission('can_place_order'))
         this.router.navigate(['/without-read']);
       else if(!this.permissionService.hasPermission('can_read'))
-        this.router.navigate(['/place-order']);
+        this.router.navigate(['/create-order']);
       else
         this.router.navigate(['/users']);
       return false;

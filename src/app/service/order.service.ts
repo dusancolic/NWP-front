@@ -4,10 +4,11 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { UtilityService } from './utility.service';
 import { PageableResponse } from '../pageable-response.model';
-import { OrderCreateModel, OrderEditModel, OrderSearchModel, OrderViewModel } from '../model/order-model';
+import { OrderCreateModel, OrderEditModel, OrderScheduleModel, OrderSearchModel, OrderViewModel } from '../model/order-model';
 
 const ORDERS = "/orders";
 const SEARCH = "/search";
+const SCHEDULE = "/schedule";
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +32,14 @@ export class OrderService {
     const headers = this.utilityService.getHeaders();
     return this.http.post<OrderViewModel>(
       this.url + ORDERS, request,
+      { headers }
+    );
+  }
+
+  scheduleOrder(request: OrderScheduleModel) {
+    const headers = this.utilityService.getHeaders();
+    return this.http.post<OrderViewModel>(
+      this.url + ORDERS + SCHEDULE, request,
       { headers }
     );
   }

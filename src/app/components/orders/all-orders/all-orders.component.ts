@@ -7,16 +7,17 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
-import { NavigationComponent } from '../navigation/navigation.component';
-import { OrderEditModel, OrderSearchModel, OrderViewModel } from '../../model/order-model';
-import { PermissionService } from '../../service/permisions.service';
-import { OrderService } from '../../service/order.service';
+
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { NavigationComponent } from '../../navigation/navigation.component';
+import { OrderEditModel, OrderSearchModel, OrderViewModel } from '../../../model/order-model';
+import { OrderService } from '../../../service/order.service';
+import { PermissionService } from '../../../service/permisions.service';
 
 
 const HOME = '/home';
@@ -83,13 +84,9 @@ export class AllOrdersComponent implements OnInit {
       this.dataSource.data = res.content;
       this.totalOrders = res.totalElements;
       this.dataSource.sort = this.sort;
+      this.orderDoesntExist = this.dataSource.data.length === 0;
     }));
-    if(this.dataSource.data.length == 0){
-      this.orderDoesntExist = true;
-    }
-    else{
-      this.orderDoesntExist = false;
-    }
+
   }
 
   onPageChange(event: PageEvent) {
@@ -147,7 +144,6 @@ export class AllOrdersComponent implements OnInit {
 
   onReset(): void {
     this.ordersSearchForm.reset();
-    this.orderDoesntExist = false;
   }
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => {
