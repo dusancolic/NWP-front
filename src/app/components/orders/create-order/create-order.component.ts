@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { PermissionService } from '../../../service/permisions.service';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
@@ -30,6 +31,7 @@ import { PermissionService } from '../../../service/permisions.service';
     MatRadioModule,
     NavigationComponent,
     MatTableModule,
+    MatIconModule,
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -48,11 +50,10 @@ export class CreateOrderComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
   totalPrice: number = 0;
-  createFailed: boolean = false;
 
   createOrderForm!: FormGroup;
   dishes: DishViewModel[] = [];
-  selectedDishes: DishViewModel[] = [];
+  selectedDishes: Map<DishViewModel, number> = new Map();
   errorMessages = {
     scheduledFor: [
       { type: 'required', message: 'Order time is required' },
@@ -66,7 +67,6 @@ export class CreateOrderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createOrderForm = this.formBuilder.group({
       orderType: ['immediate', Validators.required],
-      dishes: [[], Validators.required],
       scheduledFor: [null],
     });
     this.getDishes();
@@ -80,7 +80,6 @@ export class CreateOrderComponent implements OnInit, OnDestroy {
       scheduledForControl?.updateValueAndValidity();
     });
 
-    this.resetData();
   }
 
   canSchedule(): boolean {
@@ -93,14 +92,41 @@ export class CreateOrderComponent implements OnInit, OnDestroy {
     return selectedDate.getTime() > now.getTime() ? null : { invalidDate: true };
   }
 
+  addDish(dish: DishViewModel) {
+    const currentQuantity = this.selectedDishes.get(dish) || 0;
+    this.selectedDishes.set(dish, currentQuantity + 1);
+    this.calculateTotalPrice();
+  }
+
+  removeDish(dish: DishViewModel) {
+    const currentQuantity = this.selectedDishes.get(dish) || 0;
+    if (currentQuantity > 0) {
+      this.selectedDishes.set(dish, currentQuantity - 1);
+    }
+    this.calculateTotalPrice();
+  }
+
+  getDishQuantity(dish: DishViewModel): number {
+    return this.selectedDishes.get(dish) || 0;
+  }
+
+  calculateTotalPrice() {
+    this.totalPrice = Array.from(this.selectedDishes.entries())
+      .reduce((total, [dish, quantity]) => total + (dish.price * quantity), 0);
+  }
 
   getForm(): FormGroup {
     return this.createOrderForm;
   }
 
   onSubmit(): void {
-    if (this.createOrderForm.valid) {
-      const dishes = this.createOrderForm.value.dishes;
+    if (this.createOrderForm.valid && this.totalPrice > 0) {
+      const dishes: DishViewModel[] = [];
+      this.selectedDishes.forEach((quantity, dish) => {
+        for (let i = 0; i < quantity; i++) {
+          dishes.push(dish);
+        }
+      });
       const scheduledFor = this.createOrderForm.value.scheduledFor;
 
       const createOrderPost: OrderCreateModel = {
@@ -116,17 +142,13 @@ export class CreateOrderComponent implements OnInit, OnDestroy {
           .subscribe(
             response => {
               if (response) {
-                this.createFailed = false;
                 this.createOrderForm.reset();
                 this.router.navigate(['/orders']);
-              } else {
-                this.createFailed = true;
               }
             },
             error => {
               console.error('Error while ordering:', error);
               this.errorMessage = 'Error while ordering. Try again!';
-              this.createFailed = true;
             }
           ));
       }
@@ -136,34 +158,20 @@ export class CreateOrderComponent implements OnInit, OnDestroy {
           .subscribe(
             response => {
               if (response) {
-                this.createFailed = false;
                 this.createOrderForm.reset();
                 this.router.navigate(['/orders']);
-              } else {
-                this.createFailed = true;
               }
             },
             error => {
               console.error('Error while scheduling order:', error);
               this.errorMessage = 'Error while scheduling order. Try again!';
-              this.createFailed = true;
+              
             }
           ));
       }
     }
-    else {
-      this.createFailed = true;
-    }
   }
 
-  toggleOnDishSelection(dish: DishViewModel): void {
-
-    if (this.selectedDishes.includes(dish))
-      this.selectedDishes = this.selectedDishes.filter(d => d !== dish);
-    else
-      this.selectedDishes.push(dish);
-    this.totalPrice = this.selectedDishes.reduce((total: number, dish: any) => total + dish.price, 0);
-  }
 
   getDishes() {
     this.subscriptions.push(this.dishService.getDishesFromMenu(0, 10000).subscribe(res => {
@@ -171,9 +179,7 @@ export class CreateOrderComponent implements OnInit, OnDestroy {
     }));
   }
 
-  resetData() {
-    this.createFailed = false;
-  }
+  
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => {

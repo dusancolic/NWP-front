@@ -71,3 +71,26 @@ form {
     font-weight: bold;
     margin-top: 12px;
 }
+
+.dishes-list {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .dish-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+  }
+  
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Add space between the elements */
+  }
+  
+  .actions span {
+    font-size: 16px;
+    font-weight: bold;
+  }

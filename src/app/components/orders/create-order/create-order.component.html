@@ -8,15 +8,21 @@
                     <mat-radio-button value="scheduled">Schedule for Later</mat-radio-button>
                 </mat-radio-group>
 
-                <mat-form-field appearance="fill">
-                    <mat-label>Dishes</mat-label>
-                    <mat-select formControlName="dishes" multiple required>
-                        <mat-option *ngFor="let dish of dishes" [value]="dish"
-                            (onSelectionChange)="toggleOnDishSelection(dish)">
-                            {{ dish.name }} - {{ dish.price }} din
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <div class="dishes-list">
+                    <div *ngFor="let dish of dishes" class="dish-item">
+                      <span>{{ dish.name }} - {{ dish.price }} din.</span>
+                      <div class="actions">
+                        <button mat-icon-button color="primary" type="button" (click)="addDish(dish)">
+                          <mat-icon>add</mat-icon>
+                        </button>
+                        <span>{{ getDishQuantity(dish) }}</span>
+                        <button mat-icon-button color="warn" type="button" (click)="removeDish(dish)">
+                          <mat-icon>remove</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  
 
                 <div *ngIf="createOrderForm.get('orderType')?.value === 'scheduled'">
                     <mat-form-field appearance="fill">
@@ -34,7 +40,7 @@
                 </div>
 
                 <div class="button-group">
-                    <button mat-raised-button color="primary" type="submit">Order</button>
+                    <button mat-raised-button color="primary" type="submit" [disabled]="totalPrice === 0">Order</button>
                 </div>
 
                 <div>
