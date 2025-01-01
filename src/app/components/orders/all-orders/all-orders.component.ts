@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { from, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { Router, RouterOutlet } from '@angular/router';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -18,7 +18,8 @@ import { NavigationComponent } from '../../navigation/navigation.component';
 import { OrderEditModel, OrderSearchModel, OrderViewModel } from '../../../model/order-model';
 import { OrderService } from '../../../service/order.service';
 import { PermissionService } from '../../../service/permisions.service';
-
+import SockJS from 'sockjs-client';
+import * as Stomp from 'stompjs';
 
 const HOME = '/home';
 
@@ -44,11 +45,10 @@ const HOME = '/home';
     MatSelectModule,
   ],
   templateUrl: './all-orders.component.html',
-  styleUrl: './all-orders.component.css',
+  styleUrls: ['./all-orders.component.css'],
   providers: [DatePipe]
 })
-export class AllOrdersComponent implements OnInit {
-
+export class AllOrdersComponent implements OnInit, OnDestroy {
   fromDate: Date = new Date();
   toDate: Date = new Date();
   orderedBy: string = '';
@@ -65,8 +65,10 @@ export class AllOrdersComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   orderDoesntExist: boolean = false;
   ordersSearchForm!: FormGroup;
+  stompClient: Stomp.Client | null = null;
+  isWebSocketConnected: boolean = false;
 
-  constructor(private fb: FormBuilder, private datePipe: DatePipe, private orderService: OrderService, private router: Router, private permissionService: PermissionService) { }
+  constructor(private fb: FormBuilder, private datePipe: DatePipe, private orderService: OrderService, private router: Router, private permissionService: PermissionService) {}
 
   ngOnInit(): void {
     this.getOrders();
@@ -76,8 +78,13 @@ export class AllOrdersComponent implements OnInit {
       fromDate: [null],
       toDate: [null]
     });
+    if(this.canTrack()){
+      this.onConnect(() => {
+        console.log("connected");
+        this.sendMessage();
+      });
   }
-
+  }
 
   getOrders() {
     this.subscriptions.push(this.orderService.getOrders(this.pageIndex, this.pageSize, this.request).subscribe(res => {
@@ -86,7 +93,28 @@ export class AllOrdersComponent implements OnInit {
       this.dataSource.sort = this.sort;
       this.orderDoesntExist = this.dataSource.data.length === 0;
     }));
+  }
 
+  onConnect(callback: () => void) {
+    const token = localStorage.getItem('token');
+    const socket = new SockJS(`http://localhost:8080/ws?jwt=${token}`);
+    this.stompClient = Stomp.over(socket);
+    this.stompClient.connect({}, () => {
+      this.isWebSocketConnected = true;
+      this.stompClient?.subscribe('/topic/orders', (message) => {
+        console.log("message ", message);
+        this.getOrders();
+      });
+      callback();
+    });
+  }
+
+  sendMessage() {
+    if (this.stompClient && this.isWebSocketConnected) {
+      this.stompClient.send("/app/send-message", {}, JSON.stringify({'id': 1, 'status': "IN_DELIVERY"}));
+    } else {
+      console.error('WebSocket connection is not established yet.');
+    }
   }
 
   onPageChange(event: PageEvent) {
@@ -96,7 +124,7 @@ export class AllOrdersComponent implements OnInit {
   }
 
   canCancel(order: OrderViewModel): Boolean {
-    return this.permissionService.hasPermission('can_cancel_order') && (order.orderStatus.toLowerCase() == 'ordered' || order.orderStatus.toLowerCase() == 'scheduled'
+    return this.permissionService.hasPermission('can_cancel_order') && (order.orderStatus.toLowerCase() === 'ordered' || order.orderStatus.toLowerCase() === 'scheduled'
       && order.active);
   }
 
@@ -110,7 +138,6 @@ export class AllOrdersComponent implements OnInit {
   }
 
   toggleEdit(order: OrderViewModel): void {
-
     const orderHelper: OrderEditModel = {
       id: order.id,
       orderStatus: "CANCELED",
@@ -125,23 +152,20 @@ export class AllOrdersComponent implements OnInit {
         console.log(`Error canceling order:`, error);
       }
     ));
-
   }
 
   toggleOrderStatusSelection(orderStatus: string): void {
     if (this.selectedOrderStatuses.includes(orderStatus)) {
       this.selectedOrderStatuses = this.selectedOrderStatuses.filter(o => o !== orderStatus);
-    }
-    else {
+    } else {
       this.selectedOrderStatuses.push(orderStatus);
     }
-
   }
 
   onSearch() {
     this.request.from = this.ordersSearchForm.get('fromDate')?.value;
     this.request.to = this.ordersSearchForm.get('toDate')?.value;
-    this.request.username = this.ordersSearchForm.get('orderedBy')?.value == "" ? null : this.ordersSearchForm.get('orderedBy')?.value;
+    this.request.username = this.ordersSearchForm.get('orderedBy')?.value === "" ? null : this.ordersSearchForm.get('orderedBy')?.value;
     this.request.statuses = this.selectedOrderStatuses.length > 0 ? this.selectedOrderStatuses : null;
     this.getOrders();
   }
@@ -149,6 +173,7 @@ export class AllOrdersComponent implements OnInit {
   onReset(): void {
     this.ordersSearchForm.reset();
   }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => {
       if (sub && !sub.closed) {
