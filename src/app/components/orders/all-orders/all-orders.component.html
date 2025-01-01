@@ -23,7 +23,7 @@
       <!-- Order Status Column -->
       <ng-container matColumnDef="orderStatus">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-        <td mat-cell *matCellDef="let order"> {{order.orderStatus}}</td>
+        <td mat-cell *matCellDef="let order"> {{canTrack() ? order.orderStatus : "Unavailable"}}</td>
       </ng-container>
 
       <!-- Active Column -->

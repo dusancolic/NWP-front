@@ -100,6 +100,10 @@ export class AllOrdersComponent implements OnInit {
       && order.active);
   }
 
+  canTrack(): Boolean {
+    return this.permissionService.hasPermission('can_track_order');
+  }
+
   isAdmin(): Boolean {
     const admin = localStorage.getItem('admin');
     return admin !== null && admin === "true";
