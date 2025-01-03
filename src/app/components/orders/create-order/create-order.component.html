@@ -42,7 +42,9 @@
                 <div class="button-group">
                     <button mat-raised-button color="primary" type="submit" [disabled]="totalPrice === 0">Order</button>
                 </div>
-
+                <div *ngIf="orderFailed">
+                    <mat-error>Maximum of 3 active orders has been already reached!</mat-error>
+                </div>
                 <div>
                     <p>Total Price: <strong>{{ totalPrice }} din.</strong></p>
                 </div>

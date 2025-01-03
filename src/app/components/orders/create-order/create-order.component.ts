@@ -50,7 +50,7 @@ export class CreateOrderComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
   totalPrice: number = 0;
-
+  orderFailed: boolean = false;
   createOrderForm!: FormGroup;
   dishes: DishViewModel[] = [];
   selectedDishes: Map<DishViewModel, number> = new Map();
@@ -79,7 +79,7 @@ export class CreateOrderComponent implements OnInit, OnDestroy {
       }
       scheduledForControl?.updateValueAndValidity();
     });
-
+    this.orderFailed = false;
   }
 
   canSchedule(): boolean {
@@ -143,11 +143,13 @@ export class CreateOrderComponent implements OnInit, OnDestroy {
             response => {
               if (response) {
                 this.createOrderForm.reset();
+                this.orderFailed = false;
                 this.router.navigate(['/orders']);
               }
             },
             error => {
               console.error('Error while ordering:', error);
+              this.orderFailed = true;
               this.errorMessage = 'Error while ordering. Try again!';
             }
           ));
@@ -159,13 +161,14 @@ export class CreateOrderComponent implements OnInit, OnDestroy {
             response => {
               if (response) {
                 this.createOrderForm.reset();
+                this.orderFailed = false;
                 this.router.navigate(['/orders']);
               }
             },
             error => {
               console.error('Error while scheduling order:', error);
               this.errorMessage = 'Error while scheduling order. Try again!';
-              
+              this.orderFailed = true;
             }
           ));
       }
